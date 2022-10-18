@@ -1,3 +1,5 @@
+
+
 library(readxl)
 library(ggplot2)
 library(dplyr)
@@ -119,18 +121,18 @@ mri$Age_at_Scan <- as.numeric(mri$session_date - mri$BIRTH) / 365.25
 set.seed(2002)
 gmm1_2 <- hlme(LUMIPULSE_CSF_pTau ~ LUMIPULSE_CSF_AB42, subject = "ID", random=~1+LUMIPULSE_CSF_AB42, ng = 1, data =
                  csf, verbose = FALSE)
- gmm2_2 <- gridsearch(rep = 100, maxiter = 10, minit = gmm1_2,
-                      hlme(LUMIPULSE_CSF_pTau ~ LUMIPULSE_CSF_AB42, subject = "ID", random=~1+LUMIPULSE_CSF_AB42,
-                           ng = 2, data = csf, mixture = ~ LUMIPULSE_CSF_AB42,
-                           nwg=T, verbose = FALSE))
+gmm2_2 <- gridsearch(rep = 100, maxiter = 10, minit = gmm1_2,
+                     hlme(LUMIPULSE_CSF_pTau ~ LUMIPULSE_CSF_AB42, subject = "ID", random=~1+LUMIPULSE_CSF_AB42,
+                          ng = 2, data = csf, mixture = ~ LUMIPULSE_CSF_AB42,
+                          nwg=T, verbose = FALSE))
 gmm3_2 <- gridsearch(rep = 100, maxiter = 10, minit = gmm1_2,
                      hlme(LUMIPULSE_CSF_pTau ~ LUMIPULSE_CSF_AB42, subject = "ID", random=~1+LUMIPULSE_CSF_AB42,
                           ng = 3, data = csf, mixture = ~ LUMIPULSE_CSF_AB42,
                           nwg=T, verbose = FALSE))
- gmm4_2 <- gridsearch(rep = 100, maxiter = 10, minit = gmm1_2,
-                      hlme(LUMIPULSE_CSF_pTau ~ LUMIPULSE_CSF_AB42, subject = "ID", random=~1+LUMIPULSE_CSF_AB42,
-                           ng = 4, data = csf, mixture = ~ LUMIPULSE_CSF_AB42,
-                           nwg=T, verbose = FALSE))
+gmm4_2 <- gridsearch(rep = 100, maxiter = 10, minit = gmm1_2,
+                     hlme(LUMIPULSE_CSF_pTau ~ LUMIPULSE_CSF_AB42, subject = "ID", random=~1+LUMIPULSE_CSF_AB42,
+                          ng = 4, data = csf, mixture = ~ LUMIPULSE_CSF_AB42,
+                          nwg=T, verbose = FALSE))
 
 #summarytable(gmm1_2, gmm2_2, gmm3_2, gmm4_2) #figure out which one is best - smallest BIC
 ########################################################
@@ -220,9 +222,9 @@ library(itsadug)
 source("./gamm_hacks.R") #https://github.com/soskuthy/gamm_intro/blob/master/gamm_hacks.r
 
 
-                            #Random smooths like: https://arxiv.org/pdf/1703.05339.pdf
+#Random smooths like: https://arxiv.org/pdf/1703.05339.pdf
 csf_surv$ID <- as.factor(csf_surv$ID)
-                            
+
 BaseModel <- bam(LUMIPULSE_CSF_pTau ~  s(LUMIPULSE_CSF_AB42, bs = "cr") +
                    s(LUMIPULSE_CSF_AB42, class, bs = "fs",  m = 1, k = 3),
                  data = csf_surv, method = "fREML")
@@ -235,16 +237,16 @@ plot_smooth.cont(BaseModel, view="LUMIPULSE_CSF_AB42", plot_all.c="class",
                  rug=F, rm.ranef=T)
 
 df_forecast <- data.frame("LUMIPULSE_CSF_AB42" = c(seq(from = min(csf_surv[csf_surv$class == "AD Biomarker Negative",]$LUMIPULSE_CSF_AB42),
-                                                                  to = max(csf_surv[csf_surv$class == "AD Biomarker Negative",]$LUMIPULSE_CSF_AB42), 
-                                                                  length.out = 1000),
-                                                              seq(from = min(csf_surv[csf_surv$class == "AD Biomarker Positive",]$LUMIPULSE_CSF_AB42),
-                                                                  to = max(csf_surv[csf_surv$class == "AD Biomarker Positive",]$LUMIPULSE_CSF_AB42), 
-                                                                  length.out = 1000),
-                                                              seq(from = min(csf_surv[csf_surv$class == "Intermediate AD Biomarkers",]$LUMIPULSE_CSF_AB42),
-                                                                  to = max(csf_surv[csf_surv$class == "Intermediate AD Biomarkers",]$LUMIPULSE_CSF_AB42), 
-                                                                  length.out = 1000)),
-                                "class" = c(rep("AD Biomarker Negative", 1000), rep("AD Biomarker Positive", 1000),
-                                            rep("Intermediate AD Biomarkers", 1000)))
+                                                       to = max(csf_surv[csf_surv$class == "AD Biomarker Negative",]$LUMIPULSE_CSF_AB42), 
+                                                       length.out = 1000),
+                                                   seq(from = min(csf_surv[csf_surv$class == "AD Biomarker Positive",]$LUMIPULSE_CSF_AB42),
+                                                       to = max(csf_surv[csf_surv$class == "AD Biomarker Positive",]$LUMIPULSE_CSF_AB42), 
+                                                       length.out = 1000),
+                                                   seq(from = min(csf_surv[csf_surv$class == "Intermediate AD Biomarkers",]$LUMIPULSE_CSF_AB42),
+                                                       to = max(csf_surv[csf_surv$class == "Intermediate AD Biomarkers",]$LUMIPULSE_CSF_AB42), 
+                                                       length.out = 1000)),
+                          "class" = c(rep("AD Biomarker Negative", 1000), rep("AD Biomarker Positive", 1000),
+                                      rep("Intermediate AD Biomarkers", 1000)))
 
 df_forecast$class <- as.factor(df_forecast$class)
 df_forecast$class <- factor(df_forecast$class, levels=c("AD Biomarker Positive", "Intermediate AD Biomarkers", "AD Biomarker Negative"))
@@ -269,13 +271,13 @@ Fig1A <- ggplot(df_forecast, aes(x = LUMIPULSE_CSF_AB42, y = forecast, colour = 
 
 
 RatioModel <- bam(LUMIPULSE_CSF_pTau ~  s(LUMIPULSE_CSF_AB42_AB40, bs = "cr") +
-                   s(LUMIPULSE_CSF_AB42_AB40, class, bs = "fs",  m = 1, k = 3),
-                 data = csf_surv, method = "fREML")
+                    s(LUMIPULSE_CSF_AB42_AB40, class, bs = "fs",  m = 1, k = 3),
+                  data = csf_surv, method = "fREML")
 
 
 df_forecast_ratio <- data.frame("LUMIPULSE_CSF_AB42_AB40" = c(seq(from = min(csf_surv[csf_surv$class == "AD Biomarker Negative",]$LUMIPULSE_CSF_AB42_AB40),
-                                                                to = max(csf_surv[csf_surv$class == "AD Biomarker Negative",]$LUMIPULSE_CSF_AB42_AB40), 
-                                                                length.out = 1000),
+                                                                  to = max(csf_surv[csf_surv$class == "AD Biomarker Negative",]$LUMIPULSE_CSF_AB42_AB40), 
+                                                                  length.out = 1000),
                                                               seq(from = min(csf_surv[csf_surv$class == "AD Biomarker Positive",]$LUMIPULSE_CSF_AB42_AB40),
                                                                   to = max(csf_surv[csf_surv$class == "AD Biomarker Positive",]$LUMIPULSE_CSF_AB42_AB40), 
                                                                   length.out = 1000),
@@ -368,8 +370,8 @@ pet <- pet[!is.na(pet$pib_fsuvr_rsf_tot_cortmean),]
 
 
 PIBModel <- bam(pib_fsuvr_rsf_tot_cortmean ~ s(Age, bs = "cr") + 
-                   s(Age, class, bs = "fs", m = 1, k = 3),
-                 data = pet, method = "fREML")
+                  s(Age, class, bs = "fs", m = 1, k = 3),
+                data = pet, method = "fREML")
 plot_smooth(PIBModel, view="Age", plot_all="class",
             rug=F, rm.ranef=T)
 
@@ -393,11 +395,11 @@ get_AgeAtPositive(df_forecast_pib, "AD Biomarker Negative", 1.41999, ">")
 get_AgeAtPositive(df_forecast_pib,  "Intermediate AD Biomarkers", 1.41999, ">")  
 get_AgeAtPositive(df_forecast_pib, "AD Biomarker Positive", 1.41999, ">")  
 
-    
+
 #pTau
 pTauModel <- bam(LUMIPULSE_CSF_pTau ~ s(Age, bs = "cr") + 
-                    s(Age, class, bs = "fs", m = 1, k = 3),
-                  data = csf_surv, method = "fREML")
+                   s(Age, class, bs = "fs", m = 1, k = 3),
+                 data = csf_surv, method = "fREML")
 plot_smooth(pTauModel, view="Age", plot_all="class",
             rug=F, rm.ranef=T)
 
@@ -426,8 +428,8 @@ tau <- tau[!duplicated(tau),]
 tau <- tau[!is.na(tau$Tauopathy),]
 colnames(tau)[4] <- "Age"
 tauModel <- bam(Tauopathy ~ s(Age, bs = "cr") + 
-                   s(Age, class, bs = "fs", m = 1, k = 3),
-                 data = tau, method = "fREML")
+                  s(Age, class, bs = "fs", m = 1, k = 3),
+                data = tau, method = "fREML")
 plot_smooth(tauModel, view="Age", plot_all="class",
             rug=F, rm.ranef=T)
 
@@ -519,9 +521,9 @@ Plot3G <-
   ggtitle("G.")
 
 nfl_compare <- data.frame("Age" = df_forecast_nfl[df_forecast_nfl$class == "AD Biomarker Negative", "Age"],
-           "Class1_lower" = df_forecast_nfl[df_forecast_nfl$class == "AD Biomarker Negative", "lower"],
-           "Class2_lower" = df_forecast_nfl[df_forecast_nfl$class == "Intermediate AD Biomarkers", "lower"],
-           "Class3_upper" = df_forecast_nfl[df_forecast_nfl$class == "AD Biomarker Positive", "upper"])
+                          "Class1_lower" = df_forecast_nfl[df_forecast_nfl$class == "AD Biomarker Negative", "lower"],
+                          "Class2_lower" = df_forecast_nfl[df_forecast_nfl$class == "Intermediate AD Biomarkers", "lower"],
+                          "Class3_upper" = df_forecast_nfl[df_forecast_nfl$class == "AD Biomarker Positive", "upper"])
 
 ################################################################################
 ##########PRESENTED FIGURES/TABLES########################################
@@ -607,8 +609,8 @@ p1 <-   ggplot(km_obj_A[[2]], aes(x = Age, y = Probability, group = class, colou
   geom_hline(yintercept = 0.5, linetype = "dashed") +
   geom_ribbon(aes(ymin = min, ymax = max), alpha = 0.2, colour = NA) + ggtitle("A.") +
   theme(legend.text = element_text(size = 16), 
-  axis.text = element_text(size = 16), axis.title = element_text(size = 20),
-  legend.title = element_blank())
+        axis.text = element_text(size = 16), axis.title = element_text(size = 20),
+        legend.title = element_blank())
 
 p2 <- ggplot(km_obj_T[[2]], aes(x = Age, y = Probability, group = class, colour = class, fill = class)) +  
   geom_line() + theme_bw() + xlab("Age") + ylab("Percent Tau Negative") +
@@ -631,12 +633,12 @@ p3 <- ggplot(km_obj_N[[2]], aes(x = Age, y = Probability, group = class, colour 
         legend.title = element_blank())
 
 Cairo(file="./Results/Figure2.png",
-       type="png",
-       units="px", 
-       width=1800, 
-       height=1200, 
-       pointsize=12, 
-       dpi="auto")
+      type="png",
+      units="px", 
+      width=1800, 
+      height=1200, 
+      pointsize=12, 
+      dpi="auto")
 lemon::grid_arrange_shared_legend(p1, p2, p3, nrow = 3, ncol = 1)
 dev.off()
 ##################################################################################

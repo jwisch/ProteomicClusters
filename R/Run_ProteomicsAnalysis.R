@@ -1,3 +1,5 @@
+
+
 library(heatmaply)
 library(data.table)
 library(tidyr)
@@ -102,8 +104,8 @@ y_holdout_AD_Emerging <- AD_vs_Emerging_set[[4]]
 levels(y_holdout_AD_Emerging) <- c(1, 0, NA) #AD vs Emerging
 
 forecast_AD_Emerging <- data.frame("forecast" = unlist(forecast_AD_Emerging),
-                       "probability" = unlist(probs_AD_Emerging),
-                       "actual" = as.numeric(as.character(y_holdout_AD_Emerging)))
+                                   "probability" = unlist(probs_AD_Emerging),
+                                   "actual" = as.numeric(as.character(y_holdout_AD_Emerging)))
 colnames(forecast_AD_Emerging) <- c("forecast", "probability", "actual")
 table(data.frame(forecast_AD_Emerging)$forecast, data.frame(forecast_AD_Emerging)$actual)
 
@@ -123,8 +125,8 @@ y_holdout_AD_no <- AD_vs_No_set[[4]]
 levels(y_holdout_AD_no) <- c(1, NA, 0) #AD vs no
 
 forecast_AD_no <- data.frame("forecast" = unlist(forecast_AD_no),
-                       "probability" = unlist(probs_AD_no),
-                       "actual" = as.numeric(as.character(y_holdout_AD_no)))
+                             "probability" = unlist(probs_AD_no),
+                             "actual" = as.numeric(as.character(y_holdout_AD_no)))
 colnames(forecast_AD_no) <- c("forecast", "probability", "actual")
 table(data.frame(forecast_AD_no)$forecast, data.frame(forecast_AD_no)$actual)
 
@@ -145,8 +147,8 @@ y_holdout_Emerging_vs_No_set <- Emerging_vs_No_set[[4]]
 levels(y_holdout_Emerging_vs_No_set) <- c(NA, 1, 0) #AD vs Emerging
 
 forecast_Emerging_vs_No_set <- data.frame("forecast" = unlist(forecast_Emerging_vs_No),
-                             "probability" = unlist(probs_Emerging_vs_No),
-                             "actual" = as.numeric(as.character(y_holdout_Emerging_vs_No_set)))
+                                          "probability" = unlist(probs_Emerging_vs_No),
+                                          "actual" = as.numeric(as.character(y_holdout_Emerging_vs_No_set)))
 colnames(forecast_Emerging_vs_No_set) <- c("forecast", "probability", "actual")
 table(data.frame(forecast_Emerging_vs_No_set)$forecast, data.frame(forecast_Emerging_vs_No_set)$actual)
 
@@ -176,14 +178,14 @@ Fig4D <-
   ggplot(importantGenes_Emerging_No[1:10,], aes(x=reorder(Nice_Name, score), y = score, label=score)) + 
   geom_bar(stat='identity', width=.9, aes(fill = Category))  +
   coord_flip() + ylab("Log Likelihood Criterion") + xlab("") +
- theme_bw() + ggtitle("D. Intermediate vs. Negative") +
+  theme_bw() + ggtitle("D. Intermediate vs. Negative") +
   theme(legend.position = "bottom", axis.text=element_text(size=12)) +
   scale_fill_manual(values = c("#fde725", "#5ec962", "#440154", "#21918c"))
 
 Fig4E <- ggplot(importantGenes_AD_No[1:10,], aes(x=reorder(Nice_Name, score), y = score, label=score)) + 
   geom_bar(stat='identity', width=.9, aes(fill= Category))  +
   coord_flip() + ylab("Log Likelihood Criterion") + xlab("") +
-   theme_bw()+ ggtitle("E. Positive vs. Negative")+
+  theme_bw()+ ggtitle("E. Positive vs. Negative")+
   theme(legend.position = "bottom", axis.text=element_text(size=12)) +
   scale_fill_manual(values = c("#fde725", "#5ec962", "#3b528b", "#440154", "#21918c"))
 
@@ -208,8 +210,8 @@ y_holdout_AD_Emerging_cov <- AD_vs_Emerging_set_cov[[4]]
 levels(y_holdout_AD_Emerging_cov) <- c(1, 0, NA) #AD vs Emerging
 
 forecast_AD_Emerging_cov <- data.frame("forecast" = unlist(forecast_AD_Emerging_cov),
-                                   "probability" = unlist(probs_AD_Emerging_cov),
-                                   "actual" = as.numeric(as.character(y_holdout_AD_Emerging_cov)))
+                                       "probability" = unlist(probs_AD_Emerging_cov),
+                                       "actual" = as.numeric(as.character(y_holdout_AD_Emerging_cov)))
 colnames(forecast_AD_Emerging_cov) <- c("forecast", "probability", "actual")
 table(data.frame(forecast_AD_Emerging_cov)$forecast, data.frame(forecast_AD_Emerging_cov)$actual)
 
@@ -224,8 +226,8 @@ y_holdout_AD_no_cov <- AD_vs_No_set_cov[[4]]
 levels(y_holdout_AD_no_cov) <- c(1, NA, 0) #AD vs no
 
 forecast_AD_no_cov <- data.frame("forecast" = unlist(forecast_AD_no_cov),
-                             "probability" = unlist(probs_AD_no_cov),
-                             "actual" = as.numeric(as.character(y_holdout_AD_no_cov)))
+                                 "probability" = unlist(probs_AD_no_cov),
+                                 "actual" = as.numeric(as.character(y_holdout_AD_no_cov)))
 colnames(forecast_AD_no_cov) <- c("forecast", "probability", "actual")
 table(data.frame(forecast_AD_no_cov)$forecast, data.frame(forecast_AD_no_cov)$actual)
 
@@ -240,8 +242,8 @@ y_holdout_Emerging_vs_No_set_cov  <- Emerging_vs_No_set_cov [[4]]
 levels(y_holdout_Emerging_vs_No_set_cov ) <- c(NA, 1, 0) #AD vs Emerging
 
 forecast_Emerging_vs_No_set_cov  <- data.frame("forecast" = unlist(forecast_Emerging_vs_No_cov ),
-                                          "probability" = unlist(probs_Emerging_vs_No_cov ),
-                                          "actual" = as.numeric(as.character(y_holdout_Emerging_vs_No_set_cov )))
+                                               "probability" = unlist(probs_Emerging_vs_No_cov ),
+                                               "actual" = as.numeric(as.character(y_holdout_Emerging_vs_No_set_cov )))
 colnames(forecast_Emerging_vs_No_set_cov ) <- c("forecast", "probability", "actual")
 table(data.frame(forecast_Emerging_vs_No_set_cov )$forecast, data.frame(forecast_Emerging_vs_No_set_cov )$actual)
 
@@ -262,4 +264,3 @@ Pos_Neg_rocObj <- get_LassoAUC(c(NA, 1, 0), csf_df, holdout_IDs) #Pos vs Neg
 as.numeric(ci(Int_Pos_rocObj))
 as.numeric(ci(Int_Neg_rocObj))
 as.numeric(ci(Pos_Neg_rocObj))
-
